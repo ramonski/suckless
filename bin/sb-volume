@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Prints the current volume or 🔇 if muted.
+
+case $BUTTON in
+	2) notify-send "$(mixer)" ;;
+	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
+- Middle click to mute.
+- Scroll to change." ;;
+	4) mixer vol +1 ;;
+	5) mixer vol -1 ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+#[ $(pamixer --get-mute) = true ] && echo 🔇 && exit
+
+vol="$(pamixer --get-volume)"
+
+if [ "$vol" -gt "70" ]; then
+	icon="🔊"
+elif [ "$vol" -gt "30" ]; then
+	icon="🔉"
+elif [ "$vol" -gt "0" ]; then
+	icon="🔈"
+else
+	echo MUTE && exit
+fi
+
+echo "$icon$vol%"

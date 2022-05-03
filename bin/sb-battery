@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Prints all batteries, their percentage remaining and an emoji corresponding
+# to charge status (🔌 for plugged up, 🔋 for discharging on battery, etc.).
+
+case $BUTTON in
+	1) notify-send "🔋 Battery module" "🔋: discharging
+🔌: charging
+❗: battery very low!
+- Scroll to change adjust xbacklight." ;;
+	4) intel_backlight incr ;;
+	5) intel_backlight decr ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+ac=$(sysctl hw.acpi.acline | awk '{ print $2 }' )
+case "$ac" in
+	"1") icon="🔌" ;;
+	"0") icon="🔋" ;;
+esac
+
+msg=""
+capacity=$(sysctl hw.acpi.battery.life | awk '{ print $2 }')
+remaining=$(sysctl hw.acpi.battery.time | awk '{ print $2 }')
+remaining=$(acpiconf -i 0 | grep "Remaining time" | sed "s/Remaining time://")
+
+if [ "$capacity" -lt "20" ]; then
+	msg="❗"
+fi
+if [ "$capacity" -eq "5" ]; then
+	notify-send -u critical "Battery is critical!"
+fi
+
+printf "$icon%s%%%s %s" "$capacity" "$msg" "$remaining"

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+ssid=$(wpa_cli status | egrep ^ssid | sed 's/ssid=//')
+inet=$(wpa_cli status | egrep ^ip_address | sed 's/ip_address=//')
+
+case $BUTTON in
+	1) notify-send "WIFI: $wifi
+SSID: $ssid
+IP: $inet" ;;
+	# 3) setsid -f "$TERMINAL" -e wifimgr ;;
+	3) wifimgr ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+icon="📶"
+
+if [[ -z "$ssid" ]]; then
+  icon="⚠"
+else
+  icon="📶 $ssid"
+fi
+
+
+printf "%s" "$icon"

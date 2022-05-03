@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# Prints monitor brightness
+
+case $BUTTON in
+	1) notify-send "☀ Brightness module" "
+$(intel_backlight)
+
+- Scroll to change adjust xbacklight." ;;
+	4) intel_backlight incr ;;
+	5) intel_backlight decr ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+brightness=$(intel_backlight | sed "s/Current backlight value: //" | awk '{ print $1 }' | sed "s/%//")
+
+icon="☀"
+if [ "$brightness" -lt "50" ]; then
+	icon="☼"
+fi
+
+printf "$icon%s%%" "$brightness"
