@@ -4,9 +4,11 @@
 
 case $BUTTON in
 	1) notify-send "☀ Brightness module" "
-$(intel_backlight)
-
-- Scroll to change adjust xbacklight." ;;
+- Middle click to turn night shift on
+- Right click to turn night shift off
+- Scroll to change adjust backlight." ;;
+  2) nightshift on ;;
+  3) nightshift off  ;;
 	4) intel_backlight incr ;;
 	5) intel_backlight decr ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;

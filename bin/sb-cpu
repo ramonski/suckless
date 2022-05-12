@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
 
-cpu_usage () {
-    echo ""$[100-$(vmstat 1 2|tail -1|awk '{print $19}')]"%"
-}
-
 cpu_mhz () {
-    echo "$(sysctl dev.cpu.0.freq | awk '{ print $2 }')MHz"
+    echo "$(nice sysctl dev.cpu.0.freq | awk '{ print $2 }')MHz"
 }
 
 cpu_load () {
-    echo "$(top -n 1 | head -n 1 | awk '{printf "%s %s %s", $6, $7, $8}')"
+    echo "$(nice top -n 1 | head -n 1 | awk '{printf "%s %s %s", $6, $7, $8}' | sed 's/;//')"
 }
 
 case $BUTTON in
-	1) notify-send "CPU" "CPU Usage: $(cpu_usage)
+	1) notify-send "CPU" "CPU Usage: $(sb-cpu_perc)%
 CPU MHz: $(cpu_mhz)
 CPU Load: $(cpu_load)";;
 	2) setsid -f "$TERMINAL" -e htop ;;

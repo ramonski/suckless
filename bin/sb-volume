@@ -3,10 +3,11 @@
 # Prints the current volume or 🔇 if muted.
 
 case $BUTTON in
-	2) notify-send "$(mixer)" ;;
-	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
+	1) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
 - Middle click to mute.
 - Scroll to change." ;;
+  2) mixer vol 0 ;;
+	3) notify-send "" "$(mixer)" ;;
 	4) mixer vol +1 ;;
 	5) mixer vol -1 ;;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;

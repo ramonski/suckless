@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
 
+icon="📶"
 ssid=$(wpa_cli status | egrep ^ssid | sed 's/ssid=//')
 inet=$(wpa_cli status | egrep ^ip_address | sed 's/ip_address=//')
 
 case $BUTTON in
-	1) notify-send "WIFI: $wifi
+	1) notify-send "$icon Network Module" "
+- Middle click to open wifi manager
+- Right click to show connection details" ;;
+	2) wifimgr ;;
+  3) notify-send "Connection details" "
 SSID: $ssid
-IP: $inet" ;;
-	# 3) setsid -f "$TERMINAL" -e wifimgr ;;
-	3) wifimgr ;;
+IP: $inet";;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-icon="📶"
 
 if [[ -z "$ssid" ]]; then
   icon="⚠"
