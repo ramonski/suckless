@@ -33,6 +33,10 @@ if [ "$capacity" -eq "5" ] && [ "$ac" -eq 0 ]; then
 	notify-send -u critical "Battery is critical!"
 fi
 
+if [ "$capacity" -lt "3" ] && [ "$ac" -eq 0 ]; then
+	acpiconf -s 3
+fi
+
 if [ "$ac" -eq 0 ]; then
   printf "$icon%s%%%s %s" "$capacity" "$msg" "$remaining"
 else

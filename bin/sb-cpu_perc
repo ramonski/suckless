@@ -16,7 +16,12 @@ cpu_perc () {
     if [ $d1 -eq 0 ]; then
       echo "0"
     else
-      echo "$((100*d2/d1))"
+      perc=$((100*d2/d1))
+      if [ $perc -lt 0 ]; then
+        echo "$((perc*-1))"
+      else
+        echo "$((perc))"
+      fi
     fi
 
 }
